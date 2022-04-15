@@ -1,0 +1,9 @@
+{
+  "name": "devzat-node-example",
+  "version": "1.0.0",
+  "author": "merlin04",
+  "license": "MIT",
+  "scripts": {
+  	"start": "npx dotenv-cli -e .env npx esno index.ts"
+  }
+}
