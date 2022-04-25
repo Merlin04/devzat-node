@@ -1,6 +1,6 @@
 {
   "name": "devzat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "author": "merlin04",
   "main": "dist/index.js",
@@ -53,6 +53,7 @@
     "@size-limit/preset-small-lib": "^7.0.8",
     "@tsconfig/recommended": "^1.0.1",
     "@types/google-protobuf": "^3.15.5",
+    "devzat": "https://github.com/quackduck/devzat",
     "dts-cli": "^1.4.0",
     "grpc-tools": "^1.11.2",
     "grpc_tools_node_protoc_ts": "^5.3.2",
@@ -63,7 +64,6 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.6.2",
-    "devzat": "https://github.com/quackduck/devzat"
+    "@grpc/grpc-js": "^1.6.2"
   }
 }
