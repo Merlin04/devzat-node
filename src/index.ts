@@ -77,7 +77,7 @@ export default class Plugin {
     });
   }
 
-  onMessageSend(listener: Listener, callback: (event: SendEvent) => string | void | Promise<string> | Promise<void>): () => void {
+  onMessageSend(listener: Listener, callback: (event: SendEvent) => string | void | Promise<string> | Promise<void> | Promise<undefined> | Promise<string | undefined>): () => void {
     let callCancel: () => void;
 
     let attemptingReconnect = false;
@@ -136,7 +136,7 @@ export default class Plugin {
     return () => callCancel();
   }
 
-  command(command: CmdDef, callback: (event: CmdInvocation) => string | undefined | Message | Promise<string> | Promise<undefined> | Promise<Message>): () => void {
+  command(command: CmdDef, callback: (event: CmdInvocation) => string | undefined | Message | Promise<string> | Promise<undefined> | Promise<Message> | Promise<string | undefined | Message>): () => void {
     let callCancel: () => void;
 
     let attemptingReconnect = false;
