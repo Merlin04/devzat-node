@@ -2451,7 +2451,7 @@ detect-newline@3.1.0, detect-newline@^3.0.0:
 
 "devzat@https://github.com/quackduck/devzat":
   version "0.0.0"
-  resolved "https://github.com/quackduck/devzat#302551281ffabb4e6154bd2101b22bdb457b2002"
+  resolved "https://github.com/quackduck/devzat#d418382d4f32240a13e488502febb7960222290a"
 
 diff-sequences@^27.5.1:
   version "27.5.1"

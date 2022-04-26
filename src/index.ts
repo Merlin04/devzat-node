@@ -27,7 +27,7 @@ export type Message = plugin_pb.Message.AsObject;
 export type MessageRes = plugin_pb.MessageRes.AsObject;
 
 export type Listener = Omit<plugin_pb.Listener.AsObject, "regex"> & {
-  regex: RegExp | plugin_pb.Listener.AsObject["regex"]
+  regex?: RegExp | plugin_pb.Listener.AsObject["regex"]
 };
 export type Event = plugin_pb.Event.AsObject;
 
