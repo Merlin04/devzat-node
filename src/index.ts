@@ -26,10 +26,14 @@ type Stub = ServiceClient & {
 export type Message = plugin_pb.Message.AsObject;
 export type MessageRes = plugin_pb.MessageRes.AsObject;
 
-export type Listener = Omit<plugin_pb.Listener.AsObject, "event">;
-export type SendEvent = plugin_pb.SendEvent.AsObject;
+export type Listener = Omit<plugin_pb.Listener.AsObject, "regex"> & {
+  regex: RegExp | plugin_pb.Listener.AsObject["regex"]
+};
+export type Event = plugin_pb.Event.AsObject;
 
-export type CmdDef = Omit<plugin_pb.CmdDef.AsObject, "argsinfo"> & { argsInfo: plugin_pb.CmdDef.AsObject["argsinfo"] };
+export type CmdDef = Omit<plugin_pb.CmdDef.AsObject, "argsinfo"> & {
+  argsInfo: plugin_pb.CmdDef.AsObject["argsinfo"]
+};
 export type CmdInvocation = plugin_pb.CmdInvocation.AsObject;
 
 export default class Plugin {
@@ -77,7 +81,7 @@ export default class Plugin {
     });
   }
 
-  onMessageSend(listener: Listener, callback: (event: SendEvent) => string | void | Promise<string> | Promise<void> | Promise<undefined> | Promise<string | undefined>): () => void {
+  onMessageSend(listener: Listener, callback: (event: Event) => string | void | Promise<string> | Promise<void> | Promise<undefined> | Promise<string | undefined>): () => void {
     let callCancel: () => void;
 
     let attemptingReconnect = false;
@@ -95,16 +99,13 @@ export default class Plugin {
       const call: grpc.ClientDuplexStream<plugin_pb.ListenerClientData.AsObject, plugin_pb.Event.AsObject> = this.stub.registerListener();
 
       call.on("data", async (e: plugin_pb.Event.AsObject) => {
-        if(!e.send) throw new Error("Event listener gRPC stream received incorrect event type");
-        const res = await callback(e.send);
+        const res = await callback(e);
         if(!listener.middleware) {
           if(res === undefined) return; else throw new Error("Event callback returned a value but the listener wasn't marked as middleware");
         }
         call.write({
           response: {
-            send: {
-              msg: res as string | undefined
-            }
+            msg: res as string | undefined
           }
         });
       });
@@ -121,12 +122,12 @@ export default class Plugin {
           // the stream was supposed to still be open, so reconnect
           attemptReconnect()
         }
-      })
+      });
 
       call.write({
         listener: {
           ...listener,
-          event: 0 /* EventType.SEND */
+          regex: typeof listener.regex === "object" ? listener.regex.source : listener.regex
         }
       });
     };
