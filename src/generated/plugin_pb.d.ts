@@ -6,25 +6,25 @@
 
 import * as jspb from "google-protobuf";
 
-export class SendEvent extends jspb.Message { 
+export class Event extends jspb.Message { 
     getRoom(): string;
-    setRoom(value: string): SendEvent;
+    setRoom(value: string): Event;
     getFrom(): string;
-    setFrom(value: string): SendEvent;
+    setFrom(value: string): Event;
     getMsg(): string;
-    setMsg(value: string): SendEvent;
+    setMsg(value: string): Event;
 
     serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): SendEvent.AsObject;
-    static toObject(includeInstance: boolean, msg: SendEvent): SendEvent.AsObject;
+    toObject(includeInstance?: boolean): Event.AsObject;
+    static toObject(includeInstance: boolean, msg: Event): Event.AsObject;
     static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
     static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: SendEvent, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): SendEvent;
-    static deserializeBinaryFromReader(message: SendEvent, reader: jspb.BinaryReader): SendEvent;
+    static serializeBinaryToWriter(message: Event, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): Event;
+    static deserializeBinaryFromReader(message: Event, reader: jspb.BinaryReader): Event;
 }
 
-export namespace SendEvent {
+export namespace Event {
     export type AsObject = {
         room: string,
         from: string,
@@ -71,8 +71,6 @@ export namespace ListenerClientData {
 }
 
 export class Listener extends jspb.Message { 
-    getEvent(): EventType;
-    setEvent(value: EventType): Listener;
 
     hasMiddleware(): boolean;
     clearMiddleware(): void;
@@ -83,6 +81,11 @@ export class Listener extends jspb.Message {
     clearOnce(): void;
     getOnce(): boolean | undefined;
     setOnce(value: boolean): Listener;
+
+    hasRegex(): boolean;
+    clearRegex(): void;
+    getRegex(): string | undefined;
+    setRegex(value: string): Listener;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): Listener.AsObject;
@@ -96,51 +99,18 @@ export class Listener extends jspb.Message {
 
 export namespace Listener {
     export type AsObject = {
-        event: EventType,
         middleware?: boolean,
         once?: boolean,
+        regex?: string,
     }
-}
-
-export class Event extends jspb.Message { 
-
-    hasSend(): boolean;
-    clearSend(): void;
-    getSend(): SendEvent | undefined;
-    setSend(value?: SendEvent): Event;
-
-    getEventCase(): Event.EventCase;
-
-    serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): Event.AsObject;
-    static toObject(includeInstance: boolean, msg: Event): Event.AsObject;
-    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: Event, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): Event;
-    static deserializeBinaryFromReader(message: Event, reader: jspb.BinaryReader): Event;
-}
-
-export namespace Event {
-    export type AsObject = {
-        send?: SendEvent.AsObject,
-    }
-
-    export enum EventCase {
-        EVENT_NOT_SET = 0,
-        SEND = 1,
-    }
-
 }
 
 export class MiddlewareResponse extends jspb.Message { 
 
-    hasSend(): boolean;
-    clearSend(): void;
-    getSend(): MiddlewareSendResponse | undefined;
-    setSend(value?: MiddlewareSendResponse): MiddlewareResponse;
-
-    getResCase(): MiddlewareResponse.ResCase;
+    hasMsg(): boolean;
+    clearMsg(): void;
+    getMsg(): string | undefined;
+    setMsg(value: string): MiddlewareResponse;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): MiddlewareResponse.AsObject;
@@ -153,35 +123,6 @@ export class MiddlewareResponse extends jspb.Message {
 }
 
 export namespace MiddlewareResponse {
-    export type AsObject = {
-        send?: MiddlewareSendResponse.AsObject,
-    }
-
-    export enum ResCase {
-        RES_NOT_SET = 0,
-        SEND = 1,
-    }
-
-}
-
-export class MiddlewareSendResponse extends jspb.Message { 
-
-    hasMsg(): boolean;
-    clearMsg(): void;
-    getMsg(): string | undefined;
-    setMsg(value: string): MiddlewareSendResponse;
-
-    serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): MiddlewareSendResponse.AsObject;
-    static toObject(includeInstance: boolean, msg: MiddlewareSendResponse): MiddlewareSendResponse.AsObject;
-    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: MiddlewareSendResponse, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): MiddlewareSendResponse;
-    static deserializeBinaryFromReader(message: MiddlewareSendResponse, reader: jspb.BinaryReader): MiddlewareSendResponse;
-}
-
-export namespace MiddlewareSendResponse {
     export type AsObject = {
         msg?: string,
     }
@@ -289,8 +230,4 @@ export class MessageRes extends jspb.Message {
 export namespace MessageRes {
     export type AsObject = {
     }
-}
-
-export enum EventType {
-    SEND = 0,
 }

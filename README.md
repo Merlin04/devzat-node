@@ -17,6 +17,7 @@ import Devzat from "devzat";
 
 const plugin = new Devzat({
     address: "localhost:5556", // The address to the Devzat server's plugin API (different than the SSH port)
+    token: "my-token", // The token to authenticate with the server
     name: "Demo bot" // Name of your bot (can be overridden later)
 });
 ```
@@ -37,17 +38,18 @@ type Message = {
 }
 ```
 
-## `Devzat.onMessageSend(listener: Listener, callback: (e: SendEvent) => string | void | Promise<string> | Promise<void>): () => void`
+## `Devzat.onMessageSend(listener: Listener, callback: (e: Event) => string | void | Promise<string> | Promise<void>): () => void`
 
 Register an event listener to fire on every message send. Returns a function to remove the listener.
 
 ```ts
 type Listener = {
     middleware?: boolean, // If true, the listener can edit the user's message before it is sent
-    once?: boolean // Remove the listener after the first event
+    once?: boolean, // Remove the listener after the first event
+    regex?: RegExp | string // If set, the listener will only fire if the message matches the regex (doesn't include slashes or flags
 }
 
-type SendEvent = {
+type Event = {
     room: string,
     from: string,
     msg: string

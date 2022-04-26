@@ -8,7 +8,8 @@ const plugin = new Devzat({
 
 plugin.onMessageSend({
     middleware: true,
-    once: false
+    once: false,
+    regex: /([A-Z])\w+/g // regex to match all words in title case
 }, message => {
     console.log("new message!", message);
 
@@ -26,7 +27,7 @@ plugin.onMessageSend({
 
 plugin.command({
     name: "demo-bot",
-    argsInfo: "<msg | \"send-test\">",
+    argsInfo: "<msg | \"send-test\" | \"ephemeral-test\">",
     info: "Ping the demo bot"
 }, async invocation => {
     console.log("got a command", invocation);
