@@ -1,17 +1,22 @@
 import Devzat from "../dist";
 
 const plugin = new Devzat({
-    address: "localhost:5556",
+    address: process.env.DEVZAT_ADDRESS,
     name: "Demo bot",
     token: process.env.DEVZAT_TOKEN
 });
 
-plugin.onMessageSend({
+const destruct = plugin.onMessageSend({
     middleware: true,
     once: false,
     regex: /([A-Z])\w+/g // regex to match all words in title case
 }, message => {
     console.log("new message!", message);
+
+    if(message.msg === "DESTRUCT") {
+        destruct();
+     	return "destructing";
+    }
 
     if(!message.msg.startsWith("demo-bot ")) {
         return message.msg + " TESTING";

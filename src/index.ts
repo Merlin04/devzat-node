@@ -83,10 +83,11 @@ export default class Plugin {
 
   onMessageSend(listener: Listener, callback: (event: Event) => string | void | Promise<string> | Promise<void> | Promise<undefined> | Promise<string | undefined>): () => void {
     let callCancel: () => void;
+    let cancelled = false;
 
     let attemptingReconnect = false;
     const attemptReconnect = () => {
-      if(attemptingReconnect) return;
+      if(attemptingReconnect || cancelled) return;
       attemptingReconnect = true;
       console.log("Command invocation listener stream ended, reconnecting");
       setTimeout(() => {
@@ -97,6 +98,7 @@ export default class Plugin {
 
     const connect = () => {
       const call: grpc.ClientDuplexStream<plugin_pb.ListenerClientData.AsObject, plugin_pb.Event.AsObject> = this.stub.registerListener();
+      callCancel = call.cancel.bind(call);
 
       call.on("data", async (e: plugin_pb.Event.AsObject) => {
         const res = await callback(e);
@@ -134,7 +136,10 @@ export default class Plugin {
 
     connect();
 
-    return () => callCancel();
+    return () => {
+        cancelled = true;
+        callCancel();
+    };
   }
 
   command(command: CmdDef, callback: (event: CmdInvocation) => string | undefined | Message | Promise<string> | Promise<undefined> | Promise<Message> | Promise<string | undefined | Message>): () => void {
